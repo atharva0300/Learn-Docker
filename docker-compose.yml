@@ -1,0 +1,29 @@
+version: "3"
+# version of docker compose to use
+
+services: 
+# specifying all of the containers to create 
+# containers are called services here
+  
+  # provding the first container ( note the indentation )
+  node-app: 
+  # providing the configuration of the node-app container
+    # providing the build command to build the container  
+    build: .
+    # the dot(.) is the path to the Dockerfile
+    ports: 
+      - "3000:3000"
+    # providing list of ports fr the container
+    volumes:
+      # passing volumes for the container 
+      - ./:/app
+      # the ./ -> is the location of the folder on the local system
+      # the /app -> is the location of the docker app 
+    environment: 
+      # providing environmetn variables 
+      - PORT=3000
+    
+    #env_file: 
+    #  - ./.env
+      # or you can import from the local environment variables file 
+      # for the docker container

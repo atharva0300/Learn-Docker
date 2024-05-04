@@ -101,6 +101,67 @@
     ```
     It tells docker to not sync the node_modules folder
 
+11. To not allow users to create/delete files in the dokcer filsesystem. 
+    ```
+    docker run -v ${pwd}:/app:ro -v /app/node_modules -p 3000:3000 -d --name node-app node-app-image
+    ```
+
+12. To load data ( enviroment variables ) from .env file
+    ```
+    docker run -v ${pwd}:/app -v /app/node_modules --env-file ./.env  -p 3000:4000 -d --name node-app node-app-image
+    ```
+
+    .env is the name of the environment file
+    ```
+    docker run -v ${pwd}:/app -v /app/node_modules --env-file <PATH TO THE .ENV FILE> -p 3000:4000 -d --name node-app node-app-image
+    ```
+    This will add the environment variables 
+
+13. List all the volumns
+    ```
+    docker volume ls
+    ```
+
+14. Running the docker compose 
+    ```
+    docker-compose up
+    ```
+
+    Or running the docker compose in detached mode 
+    ```
+    docker-compose up -d
+    ```
+
+    otherwise
+    ```
+    docker-compose up
+    ```
+
+    for more help
+    ```
+    docker-compose up --help
+    ```
+
+15. Stopping docker-compose
+    ```
+    docker-compose down
+    ```
+    This will stop the docker-compose. 
+    
+    To get some info, run: 
+    ```
+    docker-compose down -v
+    ```
+    You will see 2 things get removed 
+        - The Container ( in my case : learn-docker-node-app )
+        - The Network ( in my case : learn-docker_default )
+
+16. To rebuild the docker image when running docker-compose
+    ```
+    docker-compose up --build
+    ```
+    This will update the docker-image. Changes made in the files on your local machine will be reflted in the docker-image. 
+  
 
 # Concepts
 
@@ -124,3 +185,40 @@ docker run -p 3000:3000 -d --name <DOCKER CONTAINER> <DOCKER IMAGE>
 To avoid the rebuilding process, we use __Volumes__.
 
 4. if you remove the node_modules folder , run the docker conatainer, the application will crash. This is because , the node_modules file is not there, server will not work without packages. Deleting the node_modules folder will sync this action in the /app as well, so it will delete the node_modules in the docker container as well. So, the docker container will tun into problems as packages are not found. 
+
+5. Everytime you delete your container, it will preserve the node_modules folder ( as we have excluded the node_modules folder from syncing ). Then re-building the container again from the image, will create new volumnes all the time. It will presserve the node_modules fodler in the container .You can manually delete the volume using 
+   ```
+   docker volume rm <VOLUMNE NAME>
+   ```
+   This will delete the volume
+
+   ```
+   docker rm <CONTAINER> -f
+   ```
+   This will not delete the volumes associated with the container
+
+   ```
+   docekr rm <CONTAINER> -fv
+   ```
+   This will delete all the volumes associated with the container
+
+   or 
+
+   ``
+   docker volume prune
+
+6. Docker-compose : Docker Compose is a tool for defining and running multi-container Docker applications. It allows you to use a YAML file to configure your application's services, networks, and volumes, and then you can create and start all the services from your configuration with a single command. Docker Compose is particularly useful for development environments, testing, and staging environments, where you need to set up multiple containers that work together.
+
+Once the docker-compose is up and running, this will create a container as per the configuration ion the docker-compose.yml file. On running ```docker image ls```, you will see a new image appear, this is in the format of <FODLER NAME>-<DOCKER IMAGE NAME>-<NUMBER>.
+In my case, this is ```learn-docker-node-app-1```.
+After this run the ```docker ps``` command and see a new container just appeared containing the __learn-docker-node-app-1__ docker image. 
+This means you docker container is up and running, so check out the localhost:3000 whichever port is configured.
+
+If the docker compose container is shut down with ```docker-compose down -v```. It will remove the container and the network. After this if we run ```docker-compose up -d```, you can see that docker has skipped the build process. This is because the docker image is already there, so no need to build the image again ( __UNLESS ANY UPDATION IS MADE IN THE FILES__ or __ANY MODIFICATIONS IN THE DOCKER IMAGE__). This will just create a new Network and start a new container. For this run the command number __16__ from the ##Commands
+
+
+
+
+## Articles
+
+1. How to Enable Live-reload on docker-based applicaions with docker volumns : https://www.freecodecamp.org/news/how-to-enable-live-reload-on-docker-based-applications/

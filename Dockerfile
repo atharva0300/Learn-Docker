@@ -35,7 +35,14 @@ COPY . ./
 # previous cache  ( the cache  wont be updated )
 
 # expose the server to port 3000
-EXPOSE 3000
+# EXPOSE 3000
+# for ENV ( environment variable )
+ENV PORT 3000
+
+# EXPOSE the port
+EXPOSE $PORT
+
+
 
 # this is the command that will be assigned too the container 
 # when we will run the container
