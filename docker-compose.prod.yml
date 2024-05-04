@@ -1,0 +1,20 @@
+# This file will keep the configurations for PRODUCTION environment
+# This file will OVERWRITE any configuration in the docker-compose.yml file ( which is shared )
+
+version: "3"
+services:
+  node-app:
+    #build: 
+    # in context, we specify the location of the docker file
+    #  context: .
+       # in args, we specify the arguments 
+    #  args:
+      # setting the NODE_ENV to production
+      # this will be useful to tell the Dockerfile whether to perform
+      # certain actions for development and others for production
+    #    NODE_ENV: production
+
+    # setting environment arguments
+    environment:
+      - NODE_ENV=production
+    command: prod

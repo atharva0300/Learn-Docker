@@ -18,7 +18,20 @@ COPY package.json .
 # which is /app 
 
 # isntalling node packages 
-RUN npm install 
+# RUN npm install 
+# no need to run : npm install 
+# we are deciding which command to run based on the environment below
+
+# importing the NDOE_ENV argument from docker-compose.dev.yml or docker.compose.prod.yml file
+ARG NODE_ENV
+# if the NODE_ENV is development, 
+# then run npm install ( which will install the dev dependencies as well )
+# else, in production, run npm install --only==productionl
+# which will not install any dev dependencies ( such as nodemon )
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
 # copy the rest of the files into our docker image 
 COPY . ./
@@ -47,6 +60,5 @@ EXPOSE $PORT
 # this is the command that will be assigned too the container 
 # when we will run the container
 # this is not hte build command, this is the runtime command
-CMD ["npm" , "run" , "dev"]
-
+ENTRYPOINT ["npm" , "run"]
 

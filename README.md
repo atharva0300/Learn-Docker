@@ -162,6 +162,42 @@
     ```
     This will update the docker-image. Changes made in the files on your local machine will be reflted in the docker-image. 
   
+17. Running docker-compose for development or production environments
+    - For development 
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+        ```
+        Here the docker-compose.yml file is shared. The docker-compose.dev.yml file is the second file that we are passing. This file will overwrite any shared configuration in the docker-compose.yml file. After this, will run the docker container in detatched mode ( since we have provided -d flag ) 
+
+    - For production 
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+        ```
+        Here the docker-compose.yml file is shared. The docker-compose.prod.yml file is the second file that we are passing. This file will overwrite any shared configuration in the docker-compose.yml file. After this, will run the docker container in detatched mode ( since we have provided -d flag ) 
+
+    The output for both of them will be the container in the running state.
+
+18. Shut down docker containers running in development or production environment. 
+    - for development
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v  
+        ```
+    - for production
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v  
+        ```
+
+19. Rebilding the new container for development or production based  on the configurations in .dev.yml or .prod.yml files
+    - for development
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+        ```
+    - for production
+        ```
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+        ```
+
+
 
 # Concepts
 

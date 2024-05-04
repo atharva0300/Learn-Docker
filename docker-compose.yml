@@ -1,3 +1,7 @@
+# This file is for SHARED configuration ( DEVELOPMENT AND PRODUCTION )
+# This configuration will be applied to both the DEVELOPMENT 
+# and the PRODUCTION
+
 version: "3"
 # version of docker compose to use
 
@@ -14,9 +18,11 @@ services:
     ports: 
       - "3000:3000"
     # providing list of ports fr the container
-    volumes:
+
+    # the volumes will only be used in development and not in production
+    #volumes:
       # passing volumes for the container 
-      - ./:/app
+    #  - ./:/app
       # the ./ -> is the location of the folder on the local system
       # the /app -> is the location of the docker app 
     environment: 
