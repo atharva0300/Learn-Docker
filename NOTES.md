@@ -352,6 +352,23 @@ If the docker compose container is shut down with ```docker-compose down -v```. 
    ```
 
 
+9. Here our node-app is now dependent on mongo-app. The mongo-app will spin up before node-app always. We can start a specific container/service using docker-compose up instead of starting off all the containers/services.
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d node-app
+    ```
+    or in general
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d <CONTAINER NAME>
+    ```
+    This will start the mongoa-app and then the node-app, in the same order. 
+
+    If we only want to spin up node-app, then
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d node-app --no-deps
+    ```
+    This does not start any linked services    
+    ![--no-deps](images/4735c40de0e2f4873d44a4236e1cc71608b692b93fe51f64d2ca38e5f576ca7f.png)  
+
 
 
 

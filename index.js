@@ -4,8 +4,8 @@ const { MONGO_IP, MONGO_PORT, MONGO_PASSWORD , MONGO_USER } = require('./config/
 
 const app = express() 
 
-const conenctWithRetry = () => {
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`
+const conenctWithRetry = () => {
 mongoose.connect(mongoURL).then(() => {
     console.log(`Successfully connected to Databse on port ${MONGO_PORT}`)  
     }).catch((e) => {
@@ -15,6 +15,8 @@ mongoose.connect(mongoURL).then(() => {
     })
 }
 
+// call the function
+conenctWithRetry()
  
 const port = process.env.PORT || 3000
 
