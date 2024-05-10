@@ -20,7 +20,16 @@
    docker image rm IMAGE_ID
    ```
    This will remvoe the docker image.
-   Here is the IMAGE_ID is hte id of the docker-image which you want to remoev
+   Here is the IMAGE_ID is hte id of the docker-image which you want to remoeve
+
+   Stopping the docker container
+   ```
+   docker stop <CONTAINER ID>
+   ```
+   or
+   ```
+   docker stop <CONTAINER NAME>
+   ```
 
 4. Create a contianer for the docker image and run it 
    ```
@@ -32,9 +41,9 @@
     --name node-app -> this is the name of the container
     <REPOSITORY> -> This is the docker image ( the repo ) 
 
-5. Check if docker is running 
+5. Check if docker container is running 
     ```
-    docker ps
+    docker ps -a
     ```
     This will list down the docker containers that are up and running
 
@@ -186,6 +195,8 @@
         ```
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v  
         ```
+
+    With the ( -v ) flag, we are deleting the volumes associated to the container
 
 19. Rebilding the new container for development or production based  on the configurations in .dev.yml or .prod.yml files
     - for development

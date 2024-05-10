@@ -6,6 +6,7 @@ services:
     #build: 
       # in context, we specify the location of the docker file
     #  context: .
+        # ( . ) means in the same directory
       # in args, we specify the arguments 
     #  args:
       # setting the NODE_ENV to development
@@ -16,7 +17,7 @@ services:
       - ./:/app
 
       # tells docker to not sync these node_modules
-      - /app/node_modules
+    # - /app/node_modules
     environment:
       - NODE_ENV=development
     command: dev

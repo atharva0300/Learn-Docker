@@ -3,3 +3,7 @@ Dockerfile
 .dockerignore
 .git
 .gitignore
+
+
+docker-compose*     
+# this means not adding any files that are related to docker-compose

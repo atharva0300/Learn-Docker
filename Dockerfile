@@ -26,7 +26,7 @@ COPY package.json .
 ARG NODE_ENV
 # if the NODE_ENV is development, 
 # then run npm install ( which will install the dev dependencies as well )
-# else, in production, run npm install --only==productionl
+# else, in production, run npm install --only=production
 # which will not install any dev dependencies ( such as nodemon )
 RUN if [ "$NODE_ENV" = "development" ]; \
         then npm install; \
