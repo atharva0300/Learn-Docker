@@ -20,4 +20,16 @@ services:
     # - /app/node_modules
     environment:
       - NODE_ENV=development
+      - MONGO_USER=atharva
+      - MONGO_PASSWORD=mypassword
     command: dev
+
+
+  mongo-app:
+  # providing the configuration of the mongo-app 
+  # Refer : https://hub.docker.com/_/mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=atharva
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
+    
+    

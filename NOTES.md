@@ -208,7 +208,30 @@
         docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
         ```
 
+20. To get a detailed information about a container
+    ```
+    docker inspect <CONTAINER ID>
+    ```
+    or 
+    ```
+    docker inspect <CONTAINER NAME>
+    ```
+    From this you can get the IP Address of the docker container.
+    Which I have obtained from and used to connect my mongodb to node-app using mongoose.
 
+11. To get a full information of the network. 
+    ```
+    docker network ls
+    ```
+    Obtain the network-id 
+    ```
+    docker network inspect <NETWORK ID>
+    ```
+    or 
+    ```
+    docker network inspect <NETWORK NAME>
+    ```
+    This will give a detaile  information about the network, like - the containers present in the network, their IP and MAC addresses etc.
 
 # Concepts
 
@@ -262,6 +285,75 @@ After this run the ```docker ps``` command and see a new container just appeared
 This means you docker container is up and running, so check out the localhost:3000 whichever port is configured.
 
 If the docker compose container is shut down with ```docker-compose down -v```. It will remove the container and the network. After this if we run ```docker-compose up -d```, you can see that docker has skipped the build process. This is because the docker image is already there, so no need to build the image again ( __UNLESS ANY UPDATION IS MADE IN THE FILES__ or __ANY MODIFICATIONS IN THE DOCKER IMAGE__). This will just create a new Network and start a new container. For this run the command number __16__ from the ##Commands
+
+7. I have added a mongo image in the Dockerfile. Now build and run using docker-compose. 
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build  
+    ```
+    And the get into the file system of learn-docker-mongo-app-1 which contains the mongo image.
+    ```
+    docker exec -it learn-docker-mongo-app-1 bash
+    ```
+    Then login to the mongosh ( mongoshell ) using the credentials given in the Dockerfile
+    ```
+    mongosh -u "atharva" -p "mypassword"
+    ```
+    Then type __show dbs__. Create a new database.
+    ```
+    db.books.insert({
+        'name' : 'harry potter'
+    })
+    ```
+    ```
+    db.books.find()
+    ```
+    ```
+    show dbs
+    ```
+    You will find __books__ database in the database entry.
+    Exit from the mongosh , then exit from mongo-app container. Now stop the learn-docker-node-app-1 container ( using docker-compose down command ). Then start the learn-docker-node-app-1 container 
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+    ```
+    Do not build. Then get into the mongo-app container and mongosh. Then __show dbs__. You will find that the database __books__ which we had created earlier is lost. This is because when the docker container is started, it pulls a fresh mongo image. So all our dbs get lost im this process. 
+    To avoid this, we use __volumes__. Volumes helps in __persisting data__.
+
+    Another thing is that, since I have mentioned the volumes for mongo as __mongo-db__, then when the node-app container is shut down, then this volume does not get erased. After restarting the container, the databases are preserved. But for this be careful, not to add the __-v__ flag in the end. 
+    Because, this will delete the attached volumes ( mongo-db ). 
+    ```
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
+    ```
+
+    To restore the running and stopped volumes
+    a. Startup the container ( docker-compose up )
+    b.
+    ```
+    docker volumes prune
+    ```
+    This will delete the volumes that we dont need and keeps other volumes
+    c. Again startup the container ( docker-compose up )
+
+8. In the ```index.js``` file, when we are connecting our nodejs app with mongodb using ```mongoose.connect()``` , in the string, we pass _@ip-address of the mongo container_ which we can look up using the ```docker inspect``` command. But instead of passing the hardcoded ip-address, we can pass the container name in the string. This will tell docker to search for the mongo container name and replace the name with the ip-address automatically. It will use DNS to resolve the name of __mongo-app__ and obtain the ip-address automatically
+   ```
+   docker network ls
+   ```
+   This gives network details.
+
+   a. Start the node-app container
+   b. Get into the file system of the node-app
+   c. 
+   ```
+   ping mongo-app
+   ```
+   Now you will see that our app is conented to the mongo-app. The container name __mongo-app__ is resolved to the IP-Adress using the DNS ( Domain Naming Service ). This DNS maps the container name to the ip-adress.
+   Generally, the command is 
+   ```
+   ping <CONTAINER NAME>
+   ```
+
+
+
+
 
 
 

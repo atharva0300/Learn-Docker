@@ -33,3 +33,27 @@ services:
     #  - ./.env
       # or you can import from the local environment variables file 
       # for the docker container
+    
+    # we are specifying on which container our node-app is dependent on 
+    # our node-app is dependent on mongo-app container
+    # so, docker will spin up the mongo-app container before sipping the node-app container
+    depends_on:
+      - mongo-app
+
+  # Creating a mongo container
+  mongo-app:
+  # providing the configuration of the mongo-app 
+  # Refer : https://hub.docker.com/_/mongo
+    image : mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=atharva
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
+    volumes:
+    # Here, we are creating a "named" volume
+      # - /data/db    -> This is an "anonymous" volume
+      - mongo-db:/data/app    # this is a "named" volume
+      # we have to declare the "mongo-db" named volume in another portion of the 
+      # files so that no 2 volumes with the same name exists
+
+volumes:
+  mongo-db:
